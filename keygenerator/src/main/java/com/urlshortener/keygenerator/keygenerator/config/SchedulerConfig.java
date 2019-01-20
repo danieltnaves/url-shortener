@@ -19,7 +19,7 @@ public class SchedulerConfig {
   @Scheduled(fixedRate = 5000)
   public void createKeys() {
     List<KeyStorage> keyStorageList = keyService.saveKeyChunk();
-    if (!StringUtils.isEmpty(keyStorageList)) {
+    if (!StringUtils.isEmpty(keyStorageList) && keyStorageList.size() > 0) {
       log.info("m=saveKeyChunk, KeyStorage chunk saved with the following keys: {}", keyStorageList);
     } else {
       log.info("m=saveKeyChunk, Is not necessary to generate more keys.");
