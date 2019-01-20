@@ -26,6 +26,7 @@ To deploy and execute this application in your machine you need the following re
 * Maven
 * Docker
 * Docker Compose
+* JDK8
 
 To build and deploy the application execute the following command:
 
