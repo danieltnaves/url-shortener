@@ -19,21 +19,21 @@ public class KeyService {
 
   private KeyRepository keyRepository;
 
-  @Value("${chunk.size:100}")
   private Integer chunkSize;
 
   @Autowired
-  KeyService(KeyRepository keyRepository) {
+  KeyService(KeyRepository keyRepository, @Value("${chunk.size}") Integer chunkSize) {
     this.keyRepository = keyRepository;
+    this.chunkSize = chunkSize;
   }
 
-  private String generateKey() {
+  public String generateKey() {
     return Base64.getEncoder()
         .encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8))
         .substring(0, 7);
   }
 
-  public void saveKeyChunk() {
+  public List<KeyStorage> saveKeyChunk() {
     if (generateMoreKeys()) {
       log.info("m=saveKeyChunk, Generating key chunk with size {}", chunkSize);
       List<KeyStorage> keyStorageChunkList = new ArrayList<>();
@@ -42,18 +42,12 @@ public class KeyService {
               i ->
                   keyStorageChunkList.add(
                       new KeyStorage(generateKey(), Instant.now(), KeyStatus.ACTIVE)));
-      keyRepository.saveAll(keyStorageChunkList);
-      log.info(
-          "m=saveKeyChunk, KeyStorage chunk saved with the following keys: {}",
-          keyStorageChunkList);
-    } else {
-      log.info(
-          "m=saveKeyChunk, Is not necessary to generate more keys. Current available keys count are: {}",
-          keyRepository.countActiveKeys());
+      return keyRepository.saveAll(keyStorageChunkList);
     }
+    return new ArrayList<>();
   }
 
-  private boolean generateMoreKeys() {
+  public boolean generateMoreKeys() {
     return keyRepository.countActiveKeys() < chunkSize * 10;
   }
 }
