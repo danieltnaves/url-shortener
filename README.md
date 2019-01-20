@@ -89,5 +89,14 @@ HTTP Status: 200
 
 **PS: Note that browsers caches MOVED_PERMANENTLY(301, "Moved Permanently") redirects, to simulate hits and lastHist you will need to access URL using a different browser or clear the cache.** 
 
+## Live Demo
+
+The application was deployed in Amazon EC2 and can be acessed using Swagger UI [here](http://ec2-107-23-86-74.compute-1.amazonaws.com:8080/swagger-ui.html "http://ec2-107-23-86-74.compute-1.amazonaws.com:8080/swagger-ui.html")
+
+
+
+
+
+
 
 
