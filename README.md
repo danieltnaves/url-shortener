@@ -5,9 +5,9 @@ Most of us are familiar with seeing URLs like bit.ly or t.co on our Twitter or F
 
 ## URL Shortener Architecture
 
-
-![pbprdsldsoyz 1](https://user-images.githubusercontent.com/1865566/51440538-763bdd00-1caf-11e9-9d09-0b7a11e9e7e9.png)
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/1865566/51440538-763bdd00-1caf-11e9-9d09-0b7a11e9e7e9.png">
+</p>
 
 **Key Generator** - Is a Spring Boot App responsible for generating 7 letters unique keys. The key generation process is asynchronous and scheduled by Spring Scheduler. For each scheduled execution, a new chunk of keys will be saved in the database. The chunk size can be changed via properties the default value is (**chunk.size = 1000**) Another important note is that the scheduler only generates more keys if the numbers of available keys are less than **chunk.size * 10**.
 
