@@ -1,0 +1,21 @@
+version: '3'
+services:
+  url-shortener-mongo:
+    image: "mongo"
+    restart: always
+    ports:
+     - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: qE1J81k0
+  url-shortener-key-generator:
+    build: "./keygenerator"
+    restart: always
+  url-shortener-api:
+    build: "./api"
+    restart: always
+    ports:
+     - "8080:8080"
+
+    
+  
