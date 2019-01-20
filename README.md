@@ -44,8 +44,8 @@ sh destroy-and-deploy.sh
 
 ## How to use the application? 
 
-The easiest way to use the application is using [Swagger UI](http://localhost:8080/swagger-ui.html "http://localhost:8080/swagger-ui.html")
- to do HTTP request, but you can use any HTTP client (Postman, cURL, etc).
+The easiest way to use the application it's through [Swagger UI](http://localhost:8080/swagger-ui.html "http://localhost:8080/swagger-ui.html")
+ to do HTTP requests, but you can use any HTTP client (Postman, cURL, etc).
  
  ### Sample HTTP requests using cURL
  
