@@ -53,7 +53,7 @@ The easiest way to use the application is using [Swagger UI](http://localhost:80
 
 Request:
 ~~~~
-curl -X POST "http://localhost:8080/shortener" -H "accept: application/json" -H "Content-Type: application/js
+curl -X POST "http://localhost:8080/shortener" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"url\": \"https://github.com/danieltnaves\"}"
 ~~~~
 
 Response:
