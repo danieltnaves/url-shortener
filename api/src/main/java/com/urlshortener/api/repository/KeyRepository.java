@@ -13,6 +13,4 @@ public interface KeyRepository extends MongoRepository<KeyStorage, String> {
     @Query("{ status : 'ACTIVE' }")
     Page<KeyStorage> getActiveKeys(Pageable pageable);
 
-    @Query(value = "{ status : 'ACTIVE' }", count = true)
-    Long countActiveKeys();
 }

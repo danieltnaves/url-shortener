@@ -4,6 +4,8 @@ import com.urlshortener.api.exception.BadRequestException;
 import com.urlshortener.api.exception.NotFoundException;
 import com.urlshortener.api.exception.UnvailableKeyException;
 import com.urlshortener.api.messages.ExceptionMessages;
+import com.urlshortener.api.model.KeyStatus;
+import com.urlshortener.api.model.KeyStorage;
 import com.urlshortener.api.model.ShortURL;
 import com.urlshortener.api.repository.ShortURLRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +22,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class ShotenerService {
+public class ShortenerService {
 
   private ShortURLRepository shortURLRepository;
 
@@ -33,7 +35,7 @@ public class ShotenerService {
   private String port;
 
   @Autowired
-  public ShotenerService(
+  public ShortenerService(
       KeyService keyService,
       ShortURLRepository shortURLRepository,
       @Value("${server.hostname}") String host,
@@ -59,13 +61,13 @@ public class ShotenerService {
           String.format("%s : %s", ExceptionMessages.INVALID_URL, shortURL.getOriginalURL()));
     }
 
-    String key = keyService.getOneActiveKey();
+    KeyStorage key = keyService.getOneActiveKey();
 
-    if (StringUtils.isEmpty(key)) {
+    if (StringUtils.isEmpty(key) || KeyStatus.ACTIVE.equals(key.getStatus())) {
       throw new UnvailableKeyException(ExceptionMessages.UNVAILABLE_KEYS);
     }
 
-    shortURL.setId(key);
+    shortURL.setId(key.getId());
     ShortURL createdURL = shortURLRepository.save(shortURL);
     log.info("m=createNewShortedURL, New short URL created, data: {}", createdURL);
 

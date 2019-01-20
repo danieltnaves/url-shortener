@@ -4,7 +4,7 @@ import com.urlshortener.api.dto.CreateShortURLRequest;
 import com.urlshortener.api.dto.CreateShortURLResponse;
 import com.urlshortener.api.dto.ShortURLStatisticsResponse;
 import com.urlshortener.api.model.ShortURL;
-import com.urlshortener.api.service.ShotenerService;
+import com.urlshortener.api.service.ShortenerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -21,11 +21,11 @@ import java.time.Instant;
 @RestController
 public class URLShortenerResource {
 
-    private ShotenerService shotenerService;
+    private ShortenerService shortenerService;
 
     @Autowired
-    public URLShortenerResource(ShotenerService shotenerService) {
-        this.shotenerService = shotenerService;
+    public URLShortenerResource(ShortenerService shortenerService) {
+        this.shortenerService = shortenerService;
     }
 
     /**
@@ -44,8 +44,8 @@ public class URLShortenerResource {
     public ResponseEntity<CreateShortURLResponse> createShortURL(@ApiParam(value = "URL to be shortened.")
                                                @Validated @RequestBody CreateShortURLRequest createShortURLRequest) {
 
-        ShortURL newShortedURL = shotenerService.createNewShortedURL(new ShortURL(Instant.now(), createShortURLRequest.getUrl(), 0L));
-        String location = shotenerService.mountShortenedUrl(newShortedURL.getId());
+        ShortURL newShortedURL = shortenerService.createNewShortedURL(new ShortURL(Instant.now(), createShortURLRequest.getUrl(), 0L));
+        String location = shortenerService.mountShortenedUrl(newShortedURL.getId());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header(HttpHeaders.LOCATION, location)
@@ -67,7 +67,7 @@ public class URLShortenerResource {
                                             @PathVariable("key") String key) {
         return ResponseEntity
                 .status(HttpStatus.MOVED_PERMANENTLY)
-                .header(HttpHeaders.LOCATION, shotenerService.getShortUrl(key).getOriginalURL())
+                .header(HttpHeaders.LOCATION, shortenerService.getShortUrl(key).getOriginalURL())
                 .build();
     }
 
@@ -83,10 +83,10 @@ public class URLShortenerResource {
     @RequestMapping(value = "/shortener/{key}/statistics", method = RequestMethod.GET)
     public ResponseEntity<ShortURLStatisticsResponse> statistics(@ApiParam(value = "Short URL key", required=true)
                                             @PathVariable("key") String key) {
-        ShortURL shortUrlData = shotenerService.getShortUrlData(key);
+        ShortURL shortUrlData = shortenerService.getShortUrlData(key);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ShortURLStatisticsResponse(shotenerService.mountShortenedUrl(shortUrlData.getId()),
+                .body(new ShortURLStatisticsResponse(shortenerService.mountShortenedUrl(shortUrlData.getId()),
                         shortUrlData.getOriginalURL(),
                         shortUrlData.getCreationDate(),
                         shortUrlData.getHits(),
